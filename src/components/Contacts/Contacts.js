@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/conatactsSlice';
 
 // import Filter from 'components/Filter/Filter';
 
-export default function Contacts({ contacts, onDeleteContact }) {
+export default function Contacts({ contacts }) {
+  const dispatch = useDispatch();
+
   return (
     <div>
       {/* <Filter onFilterControl={onFilterControl} /> */}
@@ -13,7 +16,7 @@ export default function Contacts({ contacts, onDeleteContact }) {
               {name}: <span>{number}</span>
             </p>
 
-            <button onClick={() => onDeleteContact(id)} type="button">
+            <button onClick={() => dispatch(deleteContact(id))} type="button">
               delete contact
             </button>
           </li>
@@ -22,7 +25,3 @@ export default function Contacts({ contacts, onDeleteContact }) {
     </div>
   );
 }
-
-Contacts.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object),
-};

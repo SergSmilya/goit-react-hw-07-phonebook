@@ -1,10 +1,13 @@
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/conatactsSlice';
 
-export default function ContactForm({ onFormData }) {
+export default function ContactForm() {
+  const dispatch = useDispatch();
+
   function handleSubmit(values, { resetForm }) {
-    onFormData(values);
+    dispatch(addContact(values));
     resetForm();
   }
 
@@ -44,7 +47,3 @@ export default function ContactForm({ onFormData }) {
     </div>
   );
 }
-
-ContactForm.propTypes = {
-  onFormData: PropTypes.func.isRequired,
-};
