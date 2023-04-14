@@ -1,25 +1,47 @@
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/conatactsSlice';
+import {
+  useAddContactMutation,
+  useGetcontactsQuery,
+} from 'redux/Api/contactsApi';
+import { toast } from 'react-toastify';
 
 export default function ContactForm() {
-  const dispatch = useDispatch();
+  const { data: contacts } = useGetcontactsQuery();
+  const [addContact] = useAddContactMutation();
+
+  async function handleAddContact(value) {
+    try {
+      await addContact(value);
+      toast.success(`Contact ${value.name} added`, { autoClose: 2500 });
+    } catch (error) {
+      toast.error(error);
+    }
+  }
 
   function handleSubmit(values, { resetForm }) {
-    dispatch(addContact(values));
+    const dataNameLowerCase = values.name.toLowerCase().trim();
+
+    if (
+      contacts.find(el => dataNameLowerCase === el.name.toLowerCase().trim())
+    ) {
+      toast.warning(`Contact with name ${dataNameLowerCase} was added`);
+    } else {
+      handleAddContact(values);
+    }
+
     resetForm();
   }
 
   const initialValues = {
     name: '',
-    number: '',
+    phone_number: '',
   };
 
   // ValidationSchema
   const Schema = yup.object({
     name: yup.string().required(),
-    number: yup.number().required(),
+    phone_number: yup.number().required(),
   });
 
   return (
@@ -38,7 +60,7 @@ export default function ContactForm() {
 
           <label>
             Number
-            <Field type="tel" name="number"></Field>
+            <Field type="tel" name="phone_number"></Field>
           </label>
 
           <button type="submit">Add contact</button>

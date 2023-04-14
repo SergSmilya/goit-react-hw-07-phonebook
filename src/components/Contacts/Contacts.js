@@ -1,25 +1,11 @@
-import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/conatactsSlice';
-
-// import Filter from 'components/Filter/Filter';
+import ContactItem from 'components/ContactItem/ContactItem';
 
 export default function Contacts({ contacts }) {
-  const dispatch = useDispatch();
-
   return (
     <div>
-      {/* <Filter onFilterControl={onFilterControl} /> */}
       <ul>
-        {contacts.map(({ id, name, number }) => (
-          <li key={id}>
-            <p>
-              {name}: <span>{number}</span>
-            </p>
-
-            <button onClick={() => dispatch(deleteContact(id))} type="button">
-              delete contact
-            </button>
-          </li>
+        {contacts.map(contact => (
+          <ContactItem contact={contact} key={contact.id} />
         ))}
       </ul>
     </div>
