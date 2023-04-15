@@ -1,44 +1,69 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import axios from 'axios';
 
-export const contactsApi = createApi({
-  reducerPath: 'contactsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://6438fee64660f26eb1a7e5cd.mockapi.io/api/',
-  }),
-  tagTypes: ['contacts'],
+export async function getContacts() {
+  try {
+    const { data } = await axios(
+      'https://6438fee64660f26eb1a7e5cd.mockapi.io/api/contacts'
+    );
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
 
-  endpoints: builder => ({
-    getcontacts: builder.query({
-      query: () => `contacts`,
-      providesTags: ['contacts'],
-    }),
+export async function deleteContact(id) {
+  try {
+    const { data } = await axios({
+      method: 'Delete',
+      url: `https://6438fee64660f26eb1a7e5cd.mockapi.io/api/contacts/${id}`,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
 
-    deleteContact: builder.mutation({
-      query(id) {
-        return {
-          url: `contacts/${id}`,
-          method: 'Delete',
-        };
-      },
-      invalidatesTags: ['contacts'],
-    }),
+// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-    addContact: builder.mutation({
-      query(body) {
-        return {
-          url: `contacts`,
-          method: 'POST',
-          body,
-        };
-      },
+// export const contactsApi = createApi({
+//   reducerPath: 'contactsApi',
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: 'https://6438fee64660f26eb1a7e5cd.mockapi.io/api/',
+//   }),
+//   tagTypes: ['contacts'],
 
-      invalidatesTags: ['contacts'],
-    }),
-  }),
-});
+//   endpoints: builder => ({
+//     getcontacts: builder.query({
+//       query: () => `contacts`,
+//       providesTags: ['contacts'],
+//     }),
 
-export const {
-  useGetcontactsQuery,
-  useDeleteContactMutation,
-  useAddContactMutation,
-} = contactsApi;
+//     deleteContact: builder.mutation({
+//       query(id) {
+//         return {
+//           url: `contacts/${id}`,
+//           method: 'Delete',
+//         };
+//       },
+//       invalidatesTags: ['contacts'],
+//     }),
+
+//     addContact: builder.mutation({
+//       query(body) {
+//         return {
+//           url: `contacts`,
+//           method: 'POST',
+//           body,
+//         };
+//       },
+
+//       invalidatesTags: ['contacts'],
+//     }),
+//   }),
+// });
+
+// export const {
+//   useGetcontactsQuery,
+//   useDeleteContactMutation,
+//   useAddContactMutation,
+// } = contactsApi;
