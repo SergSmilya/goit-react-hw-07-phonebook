@@ -1,11 +1,28 @@
 import { Formik, Form, Field } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { addContact } from 'redux/operation';
 
 import * as yup from 'yup';
 
 export default function ContactForm() {
+  const dispatch = useDispatch();
+  const { items: contacts, error } = useSelector(state => state.contacts);
+  if (error) {
+    toast.error(error);
+  }
+
   function handleSubmit(values, { resetForm }) {
     const dataNameLowerCase = values.name.toLowerCase().trim();
-    console.log(dataNameLowerCase);
+
+    if (
+      contacts.find(el => dataNameLowerCase === el.name.toLowerCase().trim())
+    ) {
+      toast.warning(`Contact with name ${dataNameLowerCase} was added`);
+    } else {
+      dispatch(addContact(values));
+    }
+
     resetForm();
   }
 

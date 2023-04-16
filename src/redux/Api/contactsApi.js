@@ -1,28 +1,3 @@
-import axios from 'axios';
-
-export async function getContacts() {
-  try {
-    const { data } = await axios(
-      'https://6438fee64660f26eb1a7e5cd.mockapi.io/api/contacts'
-    );
-    return data;
-  } catch (error) {
-    return error;
-  }
-}
-
-export async function deleteContact(id) {
-  try {
-    const { data } = await axios({
-      method: 'Delete',
-      url: `https://6438fee64660f26eb1a7e5cd.mockapi.io/api/contacts/${id}`,
-    });
-    return data;
-  } catch (error) {
-    return error;
-  }
-}
-
 // import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // export const contactsApi = createApi({

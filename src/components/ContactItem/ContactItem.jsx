@@ -1,16 +1,22 @@
-import { useDispatch } from 'react-redux';
-import { deletedContact } from 'redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { deletedContact } from 'redux/operation';
 
 export default function ContactItem({ contact: { id, name, phone_number } }) {
   const dispatch = useDispatch();
+  const { isLoading } = useSelector(state => state.contacts);
+
   return (
     <li>
       <p>
         {name}: <span>{phone_number}</span>
       </p>
 
-      <button onClick={() => dispatch(deletedContact(id))} type="button">
-        'delete contact'
+      <button
+        onClick={() => dispatch(deletedContact(id))}
+        type="button"
+        disabled={isLoading}
+      >
+        {isLoading ? 'deleting...' : 'delete contact'}
       </button>
     </li>
   );
